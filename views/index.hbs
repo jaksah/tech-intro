@@ -1,0 +1,21 @@
+<div class="carousel">
+	{{#each images}}
+    	<a class="carousel-item" href="#one!"><img src="{{ this.src }}" width="400" alt="image"/></a>
+	{{/each}}
+</div>
+
+<div class="row">
+ 	{{#each images}}
+		<div class="col s12 m4">
+		  <div class="card">
+		    <div class="card-image">
+		      <img class="materialboxed" src="{{ this.src }}">
+		      <span class="card-title">{{ this.title }}</span>
+		    </div>
+		    <div class="card-content">
+		      <p>{{ this.desc }}</p>
+		    </div>
+		  </div>
+		</div>
+	{{/each}}
+</div>
