@@ -5,3 +5,10 @@ This tutorial includes the following features
 - Routing
 - Templating with Handlebars
 - Styling with Materialize
+- Versioning with Git
+- Deploy to Heroku
+
+## Prerequisites
+- Git
+- NodeJS
+- Heroku account (if you want to publish your app)
