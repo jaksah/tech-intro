@@ -30,7 +30,7 @@ app.listen(process.env.PORT || 3000, function(){
 var list_of_animal_images = [
   {src: 'http://www.extremetech.com/wp-content/uploads/2013/09/4Vln8-640x428.jpg', title: 'Pic 1', desc: 'Pretty picture, huh?'},
   {src: 'http://threeriversvetgroup.co.uk/wp-content/uploads/2012/05/farm-animals.jpg', title: 'Pic 2', desc: 'Pretty picture, huh?'},
-  {src: 'http://i.kinja-img.com/gawker-media/image/upload/b7wucih6xfq6b8wjuurb.jpg', title: 'Pic 3', desc: 'Pretty picture, huh?'},
+  {src: 'https://i.imgflip.com/h92ym.jpg', title: 'Pic 3', desc: 'Pretty picture, huh?'},
   {src: 'http://justsomething.co/wp-content/uploads/2013/11/cutest-baby-animals-21.jpg', title: 'Pic 4', desc: 'Pretty picture, huh?'},
   {src: 'http://www.bestfunnyjokes4u.com/wp-content/uploads/2012/12/talking-animals-joke.jpg', title: 'Pic 5', desc: 'Pretty picture, huh?'},
   {src: 'http://s3-us-west-1.amazonaws.com/www-prod-storage.cloud.caltech.edu/styles/article_photo/s3/CT_Brain-Animal-Recog_SPOTLIGHT.jpg?itok=i4fXi7PO', title: 'Pic 6', desc: 'Pretty picture, huh?'},
