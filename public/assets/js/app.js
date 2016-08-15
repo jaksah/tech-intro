@@ -22,7 +22,8 @@ $(document).ready(function(){
 		  				'</div>' +
 					'</div>'
  					);
- 			})
+ 			});
+		    $('.materialboxed').materialbox();
  		});
  	});
 });
