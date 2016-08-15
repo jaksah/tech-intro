@@ -44,6 +44,12 @@ app.get('/', function (req, res) {
 	});
 });
 
+app.get('/async', function (req, res) {
+	res.render('async', {
+		headline: 'Async Data'
+	});
+});
+
 app.get('/animal_list_data', function (req, res) {
 	res.header('Content-Type', 'application/json');
 	res.send({
