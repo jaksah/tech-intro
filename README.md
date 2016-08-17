@@ -205,3 +205,90 @@ Also add Materialize CSS and font in the `<head>` before `main.css`
 	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> <!-- ADD THIS LINE -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css"> <!-- AND THIS LINE -->
 	<link rel='stylesheet' type='text/css' href='/assets/css/main.css'>
+
+## Start coding the frontend
+
+#### Use of Materialize components
+Instead of showing the images in a plain list, we can use Materialize's Card feature. To do that, replace the content of `index.hbs` with the following snippet:
+
+	<div class="row">
+	 	{{#each images}}
+			<div class="col s12 m4">
+			  <div class="card">
+			    <div class="card-image">
+			      <img src="{{ this.src }}">
+			      <span class="card-title">{{ this.title }}</span>
+			    </div>
+			    <div class="card-content">
+			      <p>{{ this.desc }}</p>
+			    </div>
+			  </div>
+			</div>
+		{{/each}}
+	</div>
+
+The images are now aligned thanks to the grid of rows and columns Materialize provides and the images are displayed nicely with a title and a description.
+
+We can also add a so called "Lightbox" effect that will enlarge the images when clicking on them. Materialize calls this feature Materialbox and it uses JavaScript so we need to do two things.
+
+1. Add the `materialboxed` class to the `<img>`s
+
+	<img class="materialboxed" src="{{ this.src }}">
+
+2. Initialize Materialbox by adding the following to `app.js`:
+	
+	$(document).ready(function(){
+		$('.materialboxed').materialbox();
+	});
+
+The images can now be enlarged in a Lightbox by clicking on them.
+
+#### Adding multiple pages
+A website often has multiple pages. The most common way to navigate between them is to show them in a navigation bar. So lets add that. Materialize has already got us covered! At the top of `index.hbs` add:
+
+	<nav class="top-nav">
+		<div class="container">
+	  		<div class="nav-wrapper">
+	  			<a class="page-title">{{headline}}</a>
+	  			<ul id="nav-mobile" class="right hide-on-med-and-down">
+			        <li><a href="/">Home</a></li>
+			      </ul>
+			</div>
+		</div>
+	</nav>
+
+We will soon go through asynchronous data fetching so lets create a new template and route for that.
+
+- In `/views` create a file named `async.hbs`.
+- In `index.js` add a route that renders the newly added template
+	
+	app.get('/async', function (req, res) {
+		res.render('async', {
+			headline: 'Async Data'
+		});
+	});
+- Finally add the route to the nav bar below Home in `index.js`
+	
+	<li><a href="/async">Async Data</a></li>
+
+
+Now open [http://localhost:3000/](http://localhost:3000/) and you'll see an image gallery with a nav bar that has two links.
+
+As you can see the new page is completely blank. Not even the header is there. We quickly realize that specifying the nav bar in both templates is extremely redundant and does not following the [DRY principle](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself), especially if we would add more pages.
+
+#### Using Handlebars partials for common code
+Handlebars has a feature called *partials* that let us reuse templates. We can solve the nav bar situation by specifying a *header partial* in our layout, like this:
+
+	<body>
+		{{> header}}
+		{{{ body }}}
+		...
+	</body>
+
+For this to work we first need to create the partial. In `/views`, create a new folder, `/partials`, and add template file, `header.hbs`. We must also register this partial to the template engine in `index.js`. Add this right before `app.listen(...)`:
+
+	var name = 'header'
+	var template = fs.readFileSync(__dirname + '/views/partials/' + name + '.hbs', 'utf8');
+	hbs.registerPartial(name, template);
+
+Now move the nav bar content from `index.hbs` to `header.hbs` and verify on [http://localhost:3000/](http://localhost:3000/) that the root page ('/') looks the same and that the nav bar is present when clicking on the other link.
