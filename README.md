@@ -277,7 +277,7 @@ Now open [http://localhost:3000/](http://localhost:3000/) and you'll see an imag
 As you can see the new page is completely blank. Not even the header is there. We quickly realize that specifying the nav bar in both templates is extremely redundant and does not following the [DRY principle](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself), especially if we would add more pages.
 
 #### Using Handlebars partials for common code
-Handlebars has a feature called *partials* that let us reuse templates. We can solve the nav bar situation by specifying a *header partial* in our layout, like this:
+Handlebars has a feature called *partials* that let us create reusable templates. We can solve the nav bar situation by specifying a *header partial* in our layout, like this:
 
 	<body>
 		{{> header}}
@@ -292,3 +292,60 @@ For this to work we first need to create the partial. In `/views`, create a new 
 	hbs.registerPartial(name, template);
 
 Now move the nav bar content from `index.hbs` to `header.hbs` and verify on [http://localhost:3000/](http://localhost:3000/) that the root page ('/') looks the same and that the nav bar is present when clicking on the other link.
+
+#### Asynchronous data fetching
+More often than not a web page needs to respond to user interaction. We will explore this situation by simply fetching our images through our json route we previously created and render them, with the click of a button. All without reloading the page. Lets therefore, to our newly added page `async.hbs`, add a button and a container for our gallery.
+
+	<div class="row">
+		<div class="col m12 center-align">
+			<a id="get-gallery-button" class="waves-effect waves-light btn large"><i class="material-icons left">view_carousel</i>Get my images!</a>		
+		</div>
+	</div>
+
+	<div id="gallery" class="row"></div>
+
+Now, in `app.js`, use jQuery to bind a function that will create an [ajax](https://en.wikipedia.org/wiki/Ajax_(programming)) request data from our `/animal_list_data` route when clicking the button.
+
+	$('#get-gallery-button').on('click', function () {
+ 		$.ajax({
+ 			url: '/animal_list_data'
+ 		}).done(function (data) {
+ 			console.log(data);
+ 		})
+	});
+
+Check out your new button on [http://localhost:3000/async](http://localhost:3000/async) and verify in the JavaScript console (Ctrl + Shift + J / Cmd + Opt + J) that the data is printed out when clicking the button.
+
+Lets visualize this data by adding them to the `#gallery` container. For each object in the data we got from our server, the same HTML content as in our `index.hbs`. Note that we create the HTML code from a string. Since these images weren't present on initial load we need to initialize the materialboxed feature after the images has been added to the DOM with `$('.materialboxed').materialbox();`.
+
+	data.animals.forEach(function (item) {
+		$('#gallery').append(
+			'<div class="col s12 m4">' +
+				'<div class="card">' +
+				'<div class="card-image">' +
+  					'<img class="materialboxed" src="' + item.src + '">' +
+  					'<span class="card-title">' + item.title + '</span>' +
+				'</div>' +
+				'<div class="card-content">' +
+  					'<p>' + item.desc + '</p>' +
+				'</div>' +
+				'</div>' +
+			'</div>'
+		);
+	});
+    $('.materialboxed').materialbox();
+
+Now, go see what your button can do!
+
+## Publish to Heroku
+
+
+
+
+
+
+
+
+
+
+
