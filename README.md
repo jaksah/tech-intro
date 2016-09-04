@@ -21,7 +21,7 @@ Install from [this link](https://nodejs.org/download/).
 
 Open the download file and follow the installation guide.
 
-#### Install Github client
+#### Install Github client and Git Bash
 Github has a graphical interface client for Git. Download [from their website](https://desktop.github.com/).
 Install and start the app. Create a [Github account](https://github.com/join) if you do not have one already.
 
@@ -233,13 +233,16 @@ We can also add a so called "Lightbox" effect that will enlarge the images when 
 
 1. Add the `materialboxed` class to the `<img>`s
 
-	<img class="materialboxed" src="{{ this.src }}">
+```
+<img class="materialboxed" src="{{ this.src }}">
+```
 
 2. Initialize Materialbox by adding the following to `app.js`:
-	
-	$(document).ready(function(){
-		$('.materialboxed').materialbox();
-	});
+```
+$(document).ready(function(){
+	$('.materialboxed').materialbox();
+});
+```
 
 The images can now be enlarged in a Lightbox by clicking on them.
 
@@ -267,6 +270,7 @@ We will soon go through asynchronous data fetching so lets create a new template
 			headline: 'Async Data'
 		});
 	});
+
 - Finally add the route to the nav bar below Home in `index.js`
 	
 	<li><a href="/async">Async Data</a></li>
@@ -292,6 +296,8 @@ For this to work we first need to create the partial. In `/views`, create a new 
 	hbs.registerPartial(name, template);
 
 Now move the nav bar content from `index.hbs` to `header.hbs` and verify on [http://localhost:3000/](http://localhost:3000/) that the root page ('/') looks the same and that the nav bar is present when clicking on the other link.
+
+_Side note:_ When adding more partials to your app you can register partials dynamically from a folder using [this snippet](https://gist.github.com/jaksah/70fc400ce70664eaa47fcb47c34b307c)
 
 #### Asynchronous data fetching
 More often than not a web page needs to respond to user interaction. We will explore this situation by simply fetching our images through our json route we previously created and render them, with the click of a button. All without reloading the page. Lets therefore, to our newly added page `async.hbs`, add a button and a container for our gallery.
@@ -338,14 +344,47 @@ Lets visualize this data by adding them to the `#gallery` container. For each ob
 Now, go see what your button can do!
 
 ## Publish to Heroku
+So far we've only developed on our local web server (`localhost`), it is now time to go live! We'll use Heroku's cloud platform to publish our app and for that you need a Heroku account and install the [Heroku CLI](https://devcenter.heroku.com/articles/getting-started-with-nodejs#set-up). Verify that Heroku CLI is setup correctly by running `heroku version`.
 
+But before we can publish our app we need to make two minor changes to our app. In `package.json`, add `"start": "node index.js"` in the `scripts` block
 
+	"scripts": {
+		"start": "node index.js"
+	}
 
+You can now start your server with `npm start`. This is also the command that Heroku will use.
 
+Also, we can't force Heroku to use port 3000. However, the port will be accessible via an environment variable. We must therefore modify `index.js` to this:
 
+	app.listen(process.env.PORT || 3000, function(){
+		console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+	});
 
+If the environment variable `PORT` is not defined we'll fall back to port 3000. Make sure these changes are committed before continuing.
 
+We are now ready to publish our app!
 
+First, run `heroku login` and login using your account credentials
 
+```
+$ heroku login
+Enter your Heroku credentials.
+Email: zeke@example.com
+Password:
+...
+```
 
+Create the your Heroku app with
+
+```
+heroku create [optional-name]
+```
+
+Publishing and updating your app is as simple as pushing the `master` branch to the `heroku` remote.
+
+```
+git push heroku master
+```
+
+Congratulations! You can now access your app on your-app-name.heroku.com or by typing `heroku open` in the terminal!
 
