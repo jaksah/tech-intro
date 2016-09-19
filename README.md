@@ -44,7 +44,7 @@ Go to the folder where you want to store your code. Then run these commands.
 npm init
 ```
 
-Follow instructions, just push enter. This will create a file called package.json
+Follow instructions, just press enter. This will create a file called package.json
 containing information about your NodeJS application, such as it's dependencies.
 
 Then run this from command line.
@@ -273,6 +273,15 @@ $(document).ready(function(){
 
 The images can now be enlarged in a Lightbox by clicking on them.
 
+Lets change change the style of the cards. Add the following to `main.css` to make the card background a little more Netlightish.
+
+```
+.card {
+	background-color: #a18cbe;
+	color: white;
+}
+```
+
 #### Adding multiple pages
 A website often has multiple pages. The most common way to navigate between them is to show them in a navigation bar. So lets add that. Materialize has already got us covered! At the top of `index.hbs` add:
 ```
@@ -287,6 +296,15 @@ A website often has multiple pages. The most common way to navigate between them
 	</div>
 </nav>
 ```
+
+Lets make this in the same color theme. Add the following to `main.css`
+
+```
+.top-nav {
+	background-color: #a18cbe;
+}
+```
+
 We will soon go through asynchronous data fetching so lets create a new template and route for that.
 
 - In `/views` create a file named `async.hbs`.
@@ -318,6 +336,7 @@ Handlebars has a feature called *partials* that let us create reusable templates
 ```
 For this to work we first need to create the partial. In `/views`, create a new folder, `/partials`, and add template file, `header.hbs`. We must also register this partial to the template engine in `index.js`. Add this right before `app.listen(...)`:
 ```
+var fs = require('fs');
 var name = 'header'
 var template = fs.readFileSync(__dirname + '/views/partials/' + name + '.hbs', 'utf8');
 hbs.registerPartial(name, template);
